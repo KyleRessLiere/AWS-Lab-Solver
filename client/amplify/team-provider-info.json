@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awscoach-dev-193553-authRole",
+      "UnauthRoleArn": "arn:aws:iam::567366275643:role/amplify-awscoach-dev-193553-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::567366275643:role/amplify-awscoach-dev-193553-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-awscoach-dev-193553-deployment",
+      "UnauthRoleName": "amplify-awscoach-dev-193553-unauthRole",
+      "StackName": "amplify-awscoach-dev-193553",
+      "StackId": "arn:aws:cloudformation:us-east-1:567366275643:stack/amplify-awscoach-dev-193553/1bdcf2c0-75c7-11ed-825d-0a535de9113f",
+      "AmplifyAppId": "d36p4rwa8disaq"
+    }
+  }
+}
