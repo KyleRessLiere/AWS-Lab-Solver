@@ -1,11 +1,28 @@
+import json
 import boto3
-import paramiko
 import time
-ssh_username = "ec2-user"
-ssh_key_file = "labsuser.pem"
-address = "44.200.6.180"
+import paramiko
 
-def main(event="None", context=None):
+def lambda_handler(event, context):
+    ssh_username = "ec2-user"
+    BUCKET_NAME = 'aws-lab-solver'
+    LOCAL_FILE_NAME = '/tmp/keyname.pem'
+    #get address and pem file from the event
+    address = event['address']
+    pemFileLocation = event["pem"]
+    print("address " + address)
+    print("pem "  + pemFileLocation)
+    
+    #load the pem file from s3 storage and store in a temporary directory
+    s3 = boto3.client('s3')
+    s3.download_file(BUCKET_NAME, pemFileLocation, LOCAL_FILE_NAME)
+    
+    #start up the ssh session using the pem file and the address
+    k = paramiko.RSAKey.from_private_key_file("/tmp/keyname.pem")
+    #k = paramiko.RSAKey.from_private_key_file(ssh_key_file)
+    c = paramiko.SSHClient()
+    c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False)
     commands = [
         "hostname",
         "aws configure",
@@ -19,16 +36,9 @@ def main(event="None", context=None):
         " aws iam list-groups-for-user --user-name user-1" , 
         " aws iam list-groups",
         " aws iam get-group --group-name EC2-Support"
-
-
-    
     ]
-
-    k = paramiko.RSAKey.from_private_key_file(ssh_key_file)
-    c = paramiko.SSHClient()
-    c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False)
-
+    
+    #loops through commands
     for command in commands:
         if(command != "aws configure"):
             print("running command: {}".format(command))
@@ -48,7 +58,10 @@ def main(event="None", context=None):
             stdin.flush()
             stdin.write("json")
             stdin.flush()
-
-        
-
+    #closes the ssh session
     c.close()
+    
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
