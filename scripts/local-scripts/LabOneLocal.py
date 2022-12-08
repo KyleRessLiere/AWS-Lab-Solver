@@ -64,11 +64,9 @@ def main():
         "aws ec2 describe-instances --profile user-1",
         "aws ec2 describe-instances --profile user-2",
         "aws ec2 describe-instances --profile user-2 --query 'Reservations[*].Instances[*].[InstanceId,InstanceType,Placement.AvailabilityZone,Tags[*]]'",#query the isntance of the
-        "end",
         "aws ec2 stop-instances --instance-ids " + labHostId +" --profile user-2", #id is from lab details
         "aws s3 ls --profile user-2", #check if user can access amazon s3 
         "aws ec2 stop-instances --instance-ids " + labHostId + " --profile user-3", ##stop instance
-
     ]
 
     k = paramiko.RSAKey.from_private_key_file(ssh_key_file)
