@@ -6,6 +6,7 @@ import { Post } from "./models";
 import { useEffect } from "react";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { Storage } from "@aws-amplify/storage";
+import { Auth } from "aws-amplify";
 
 function App() {
   const createPOST = async () => {

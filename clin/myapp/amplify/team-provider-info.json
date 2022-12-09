@@ -14,6 +14,13 @@
     "categories": {
       "auth": {
         "awsCloudLabSolver": {}
+      },
+      "storage": {
+        "awscloudlabsolverff20b1e0": {
+          "bucketName": "aws-lab-solver",
+          "region": "us-east-1"
+        },
+        "s3awslabsolveramplify": {}
       }
     }
   }

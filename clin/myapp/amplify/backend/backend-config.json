@@ -54,9 +54,8 @@
     }
   },
   "storage": {
-    "awscloudlabsolverff20b1e0": {
+    "s3awslabsolveramplify": {
       "service": "S3",
-      "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": []
     }
