@@ -1,9 +1,10 @@
 import logo from "./logo.svg";
-import "./App.css";
+import "@aws-amplify/ui-react/styles.css";
 import { DataStore } from "@aws-amplify/datastore";
 import { Lab } from "./models";
 import { Post } from "./models";
 import { useEffect } from "react";
+import { withAuthenticator } from "@aws-amplify/ui-react";
 function App() {
   const createPOST = async () => {
     const post = {
@@ -22,4 +23,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);

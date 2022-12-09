@@ -10,6 +10,11 @@
       "StackName": "amplify-awscloudlabsolver-staging-33803",
       "StackId": "arn:aws:cloudformation:us-east-1:567366275643:stack/amplify-awscloudlabsolver-staging-33803/b8c80420-76a9-11ed-9cec-0ae1a1503963",
       "AmplifyAppId": "d31atlexi29xa4"
+    },
+    "categories": {
+      "auth": {
+        "awsCloudLabSolver": {}
+      }
     }
   }
 }
