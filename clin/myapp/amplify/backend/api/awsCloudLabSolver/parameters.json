@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "awsCloudLabSolver",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-12-09T16:39:42.387Z"
+}

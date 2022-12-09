@@ -6,6 +6,38 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/
 
 
 
+type EagerLab = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Lab, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly sshKey?: string | null;
+  readonly bastionHost?: string | null;
+  readonly user1Secret?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyLab = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Lab, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly sshKey?: string | null;
+  readonly bastionHost?: string | null;
+  readonly user1Secret?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Lab = LazyLoading extends LazyLoadingDisabled ? EagerLab : LazyLab
+
+export declare const Lab: (new (init: ModelInit<Lab>) => Lab) & {
+  copyOf(source: Lab, mutator: (draft: MutableModel<Lab>) => MutableModel<Lab> | void): Lab;
+}
+
 type EagerPost = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Post, 'id'>;
