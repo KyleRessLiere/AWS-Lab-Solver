@@ -81,7 +81,7 @@ def lambda_handler(event):
         count = 0
         for command in commands:
             count +=1
-            time.sleep(2)
+            time.sleep(1.25)
         #gets the bucket id from the command
             if(command == "aws s3 ls"):
                 output = runCommand(command,c,k)
@@ -125,7 +125,7 @@ def lambda_handler(event):
         print ('caught a timeout')
      return {
         'statusCode': 200,
-        'body': json.dumps(event)
+        'body': json.dumps(commandResults)
     }
 
 
