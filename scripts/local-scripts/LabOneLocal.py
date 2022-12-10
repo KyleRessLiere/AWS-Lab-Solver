@@ -1,33 +1,37 @@
-import boto3
-import paramiko
 import json
+import boto3
 import time
-def main():
-    ssh_username = "ec2-user"
-    ssh_key_file = "labsuser.pem"
-   
+import paramiko
+
+def lambda_handler(event):
+     print(event)
+     ssh_username = "ec2-user"
+     ssh_key_file = "labsuser.pem"
+     commandResults = []
 
     ###############################
     #    BEGIN REQUIRED INPUTS    #
     ###############################
     
     #bastion host address
-    address = "44.197.188.188" 
-    region = "us-east-1"
+     pemLocation = event['pemname']
+     address = event['address'] 
+     region = event['region']
     #user1
-    user1AccessKey = "AKIAWNBISRYXNBUWVD5A"
-    user1SecretKey = "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"
+     user1AccessKey = event['user1AccessKey']
+     user1SecretKey = event["user1SecretKey"]
     #user2
-    user2AccessKey = "AKIAWNBISRYXOZVUYNMI"
-    user2SecretKey = "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"
+     user2AccessKey = event['user2AccessKey']
+     user2SecretKey = event["user2SecretKey"]
     #user3
-    user3AccessKey = "AKIAWNBISRYXEMKSXJ4X"
-    user3SecretKey = "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"
-    labHostId = "i-051cfd883bbbd6bb8"
+     user3AccessKey = event['user3AccessKey']
+     user3SecretKey = event["user2SecretKey"]
+     labHostId = event['labHostId']
     ################################
     #      END REQUIRED INPUTS     #
     ################################
-    commands = [   
+    
+     commands = [   
         #
         "hostname", #prints hostname
         "aws s3 ls", 
@@ -68,12 +72,15 @@ def main():
         "aws s3 ls --profile user-2", #check if user can access amazon s3 
         "aws ec2 stop-instances --instance-ids " + labHostId + " --profile user-3", ##stop instance
     ]
-    try:
-        k = paramiko.RSAKey.from_private_key_file(ssh_key_file)
+     try:
+        s3 = boto3.client('s3')
+        k = paramiko.RSAKey.from_private_key_file("labsuser.pem")
         c = paramiko.SSHClient()
         c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False, timeout=5)
+        c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False,timeout=10)
+        count = 0
         for command in commands:
+            count +=1
             time.sleep(2)
         #gets the bucket id from the command
             if(command == "aws s3 ls"):
@@ -93,6 +100,7 @@ def main():
                 awsConfigure(command, user2AccessKey, user2SecretKey, region, c, k)
             elif(command == "aws configure --profile user-3"):
                 awsConfigure(command, user3AccessKey, user3SecretKey, region, c, k)
+            #gets the bucket number by parsing after the dash for buck
             elif(command == "aws s3 ls --profile user-3"):
                 output = runCommand(command,c,k)
                 print(output)
@@ -104,15 +112,21 @@ def main():
             
             else:
                 output = runCommand(command,c,k)
-    
+                
+            commandResults.append({"commandId":count,"command":command,"output":output})
             #upload the text file to s3 bucket
             
 
         #close the parimiko ssh session
-
+        print(json.dumps(commandResults,sort_keys=True, indent=4))
         c.close()
-    except:
+     except (paramiko.BadHostKeyException, paramiko.AuthenticationException, paramiko.SSHException) as e:
+        print (e)
         print ('caught a timeout')
+     return {
+        'statusCode': 200,
+        'body': json.dumps(event)
+    }
 
 
 #################################################################
@@ -140,4 +154,17 @@ def awsConfigure(command,key,secretKey,region,c,k):
      output = stdout.read().decode('ascii')
      print(output)
      return output
-main()
+    
+
+lambda_handler({
+  "pemname": "labsuser.pem",
+  "address": "44.202.189.244",
+  "region": "us-east-1",
+  "user1AccessKey": "AKIAWNBISRYXABLY4Z6M",
+  "user1SecretKey": "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",
+  "user2AccessKey": "AKIAWNBISRYXDS7EITNF",
+  "user2SecretKey": "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",
+  "user3AccessKey": "AKIAWNBISRYXPBK3DAGI",
+  "user3SecretKey": "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",
+  "labHostId": "44.202.189.244"
+})
