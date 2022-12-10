@@ -10,7 +10,19 @@ import { Auth } from "aws-amplify";
 
 function App() {
   const labOnePost = async () => {
-    const data = { ssh: "asdasdasdasdasd", pemname: "aasd" };
+    const data = {
+      pemname: "labsuser.pem",
+      address: "44.202.189.244",
+      region: "us-east-1",
+      user1AccessKey: "AKIAWNBISRYXABLY4Z6M",
+      user1SecretKey: "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",
+      user2AccessKey: "AKIAWNBISRYXDS7EITNF",
+      user2SecretKey: "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",
+      user3AccessKey: "AKIAWNBISRYXPBK3DAGI",
+      user3SecretKey: "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",
+      labHostId: "44.202.189.244",
+    };
+
     console.log(JSON.stringify(data));
     fetch(
       "https://kt5mwprxge.execute-api.us-east-1.amazonaws.com/default/lab1Solver",
