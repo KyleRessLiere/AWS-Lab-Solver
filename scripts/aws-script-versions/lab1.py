@@ -1,8 +1,10 @@
-#AWS versions
+import json
 import boto3
-import paramiko
 import time
+import paramiko
+
 def lambda_handler(event, context):
+     print(event)
      ssh_username = "ec2-user"
      ssh_key_file = "labsuser.pem"
    
@@ -12,21 +14,25 @@ def lambda_handler(event, context):
     ###############################
     
     #bastion host address
-     address = "44.197.188.188" 
-     region = "us-east-1"
+     pemLocation = event['pemname']
+     address = event['address'] 
+     region = event['region']
     #user1
-     user1AccessKey = "AKIAWNBISRYXNBUWVD5A"
-     user1SecretKey = "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"
+     user1AccessKey = event['user1AccessKey']
+     user1SecretKey = event["user1SecretKey"]
     #user2
-     user2AccessKey = "AKIAWNBISRYXOZVUYNMI"
-     user2SecretKey = "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"
+     user2AccessKey = event['user2AccessKey']
+     user2SecretKey = event["user2SecretKey"]
     #user3
-     user3AccessKey = "AKIAWNBISRYXEMKSXJ4X"
-     user3SecretKey = "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"
-     labHostId = "i-051cfd883bbbd6bb8"
+     user3AccessKey = event['user3AccessKey']
+     user3SecretKey = event["user2SecretKey"]
+     labHostId = event['labHostId']
     ################################
     #      END REQUIRED INPUTS     #
     ################################
+     BUCKET_NAME = 'aws-lab-solver'
+     LOCAL_FILE_NAME = '/tmp/keyname.pem'
+     commandResults = []
      commands = [   
         #
         "hostname", #prints hostname
@@ -67,56 +73,68 @@ def lambda_handler(event, context):
         "aws ec2 stop-instances --instance-ids " + labHostId +" --profile user-2", #id is from lab details
         "aws s3 ls --profile user-2", #check if user can access amazon s3 
         "aws ec2 stop-instances --instance-ids " + labHostId + " --profile user-3", ##stop instance
-
     ]
+     try:
+        s3 = boto3.client('s3')
+        s3.download_file(BUCKET_NAME, pemLocation, LOCAL_FILE_NAME)
+        k = paramiko.RSAKey.from_private_key_file("/tmp/keyname.pem")
+        c = paramiko.SSHClient()
+        c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False,timeout=10)
+        count = 0
+        for command in commands:
+            count +1
+            #time.sleep(1)
+        #gets the bucket id from the command
+            if(command == "aws s3 ls"):
+                output = runCommand(command,c,k)
+                sampleBucketId = (output).split("--",1)[1]
+                print(sampleBucketId) 
+            #troubleshooting
+            elif command == "end":
+                break
+            #adds sample buck from s3 ls to target the bucket
+            elif(command == "aws s3 cp sample.txt s3://samplebucket--"):
+                command = "aws s3 cp sample.txt s3://samplebucket--" + sampleBucketId
+                output = runCommand(command,c,k)
+            elif(command == "aws configure --profile user-1"):
+                awsConfigure(command, user1AccessKey, user1SecretKey, region, c, k)
+            elif(command == "aws configure --profile user-2"):
+                awsConfigure(command, user2AccessKey, user2SecretKey, region, c, k)
+            elif(command == "aws configure --profile user-3"):
+                awsConfigure(command, user3AccessKey, user3SecretKey, region, c, k)
+            #gets the bucket number by parsing after the dash for buck
+            elif(command == "aws s3 ls --profile user-3"):
+                output = runCommand(command,c,k)
+                print(output)
+                sampleBucketId = (output).split("--",1)[1]
+                print(sampleBucketId) 
+            elif (command == "aws s3 ls s3://<sample-bucket> --profile user-1"):
+                command = "aws s3 ls s3://" +sampleBucketId + " --profile user-1"
+                output = runCommand(command,c,k)
+            
+            else:
+                output = runCommand(command,c,k)
+      
+            #upload the text file to s3 bucket
+            commandResults.append({"commandId":count,"command":command.replace('\\', ''),"output":output.replace('\\', '')})
 
-     k = paramiko.RSAKey.from_private_key_file(ssh_key_file)
-     c = paramiko.SSHClient()
-     c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-     c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False)
-     for command in commands:
-        time.sleep(2)
-       #gets the bucket id from the command
-        if(command == "aws s3 ls"):
-            output = runCommand(command,c,k)
-            sampleBucketId = (output).split("--",1)[1]
-            print(sampleBucketId) 
-        #troubleshooting
-        elif command == "end":
-            break
-        #adds sample buck from s3 ls to target the bucket
-        elif(command == "aws s3 cp sample.txt s3://samplebucket--"):
-            command = "aws s3 cp sample.txt s3://samplebucket--" + sampleBucketId
-            output = runCommand(command,c,k)
-        elif(command == "aws configure --profile user-1"):
-            awsConfigure(command, user1AccessKey, user1SecretKey, region, c, k)
-        elif(command == "aws configure --profile user-2"):
-            awsConfigure(command, user2AccessKey, user2SecretKey, region, c, k)
-        elif(command == "aws configure --profile user-3"):
-            awsConfigure(command, user3AccessKey, user3SecretKey, region, c, k)
-        elif(command == "aws s3 ls --profile user-3"):
-            output = runCommand(command,c,k)
-            print(output)
-            sampleBucketId = (output).split("--",1)[1]
-            print(sampleBucketId) 
-        elif (command == "aws s3 ls s3://<sample-bucket> --profile user-1"):
-            command = "aws s3 ls s3://" +sampleBucketId + " --profile user-1"
-            output = runCommand(command,c,k)
-        
-        else:
-             output = runCommand(command,c,k)
-       
-       
-
-        #upload the text file to s3 bucket
-        
-
-
-
-    #close the parimiko ssh session
-
-     c.close()
-
+        #close the parimiko ssh session
+        print(json.dumps(commandResults,sort_keys=True, indent=4))
+        c.close()
+     except (paramiko.BadHostKeyException, paramiko.AuthenticationException, paramiko.SSHException) as e:
+        print( e )
+        print ('caught a timeout')
+     if(len(commandResults) > 0):
+        return {
+        'statusCode': 200,
+        'body':commandResults
+        }
+     else:
+         return {
+        'statusCode': 200,
+        'body':"Script failed to run"
+         } 
 
 
 #################################################################
@@ -144,3 +162,4 @@ def awsConfigure(command,key,secretKey,region,c,k):
      output = stdout.read().decode('ascii')
      print(output)
      return output
+    
