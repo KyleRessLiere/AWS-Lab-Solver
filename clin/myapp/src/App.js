@@ -40,6 +40,18 @@ function App() {
         console.log("Success:", data);
       });
   };
+
+  async function onChange(e) {
+    const file = e.target.files[0];
+    try {
+      await Storage.put(file.name, file, {
+        contentType: "image/png", // contentType is optional
+      });
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  }
+
   const createPOST = async () => {
     const post = {
       title: window.prompt("blog post title"),
@@ -54,6 +66,7 @@ function App() {
   };
   return (
     <div className="App">
+      <input type="file" onChange={onChange} />;
       <button onClick={labOnePost}>Create POST</button>
       <h1>Test</h1>
     </div>
