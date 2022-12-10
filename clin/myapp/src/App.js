@@ -68,7 +68,13 @@ function App() {
     <div className="App">
       <input type="file" onChange={onChange} />;
       <button onClick={labOnePost}>Create POST</button>
-      <h1>Test</h1>
+      <form>
+        <label>
+          Bastion Host Address:
+          <input type="text" address="Bastion Host Address" />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
     </div>
   );
 }
