@@ -68,54 +68,51 @@ def main():
         "aws s3 ls --profile user-2", #check if user can access amazon s3 
         "aws ec2 stop-instances --instance-ids " + labHostId + " --profile user-3", ##stop instance
     ]
+    try:
+        k = paramiko.RSAKey.from_private_key_file(ssh_key_file)
+        c = paramiko.SSHClient()
+        c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False, timeout=5)
+        for command in commands:
+            time.sleep(2)
+        #gets the bucket id from the command
+            if(command == "aws s3 ls"):
+                output = runCommand(command,c,k)
+                sampleBucketId = (output).split("--",1)[1]
+                print(sampleBucketId) 
+            #troubleshooting
+            elif command == "end":
+                break
+            #adds sample buck from s3 ls to target the bucket
+            elif(command == "aws s3 cp sample.txt s3://samplebucket--"):
+                command = "aws s3 cp sample.txt s3://samplebucket--" + sampleBucketId
+                output = runCommand(command,c,k)
+            elif(command == "aws configure --profile user-1"):
+                awsConfigure(command, user1AccessKey, user1SecretKey, region, c, k)
+            elif(command == "aws configure --profile user-2"):
+                awsConfigure(command, user2AccessKey, user2SecretKey, region, c, k)
+            elif(command == "aws configure --profile user-3"):
+                awsConfigure(command, user3AccessKey, user3SecretKey, region, c, k)
+            elif(command == "aws s3 ls --profile user-3"):
+                output = runCommand(command,c,k)
+                print(output)
+                sampleBucketId = (output).split("--",1)[1]
+                print(sampleBucketId) 
+            elif (command == "aws s3 ls s3://<sample-bucket> --profile user-1"):
+                command = "aws s3 ls s3://" +sampleBucketId + " --profile user-1"
+                output = runCommand(command,c,k)
+            
+            else:
+                output = runCommand(command,c,k)
+    
+            #upload the text file to s3 bucket
+            
 
-    k = paramiko.RSAKey.from_private_key_file(ssh_key_file)
-    c = paramiko.SSHClient()
-    c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    c.connect(hostname= address, username=ssh_username, pkey=k, allow_agent=False, look_for_keys=False)
-    for command in commands:
-        time.sleep(2)
-       #gets the bucket id from the command
-        if(command == "aws s3 ls"):
-            output = runCommand(command,c,k)
-            sampleBucketId = (output).split("--",1)[1]
-            print(sampleBucketId) 
-        #troubleshooting
-        elif command == "end":
-            break
-        #adds sample buck from s3 ls to target the bucket
-        elif(command == "aws s3 cp sample.txt s3://samplebucket--"):
-            command = "aws s3 cp sample.txt s3://samplebucket--" + sampleBucketId
-            output = runCommand(command,c,k)
-        elif(command == "aws configure --profile user-1"):
-            awsConfigure(command, user1AccessKey, user1SecretKey, region, c, k)
-        elif(command == "aws configure --profile user-2"):
-            awsConfigure(command, user2AccessKey, user2SecretKey, region, c, k)
-        elif(command == "aws configure --profile user-3"):
-            awsConfigure(command, user3AccessKey, user3SecretKey, region, c, k)
-        elif(command == "aws s3 ls --profile user-3"):
-            output = runCommand(command,c,k)
-            print(output)
-            sampleBucketId = (output).split("--",1)[1]
-            print(sampleBucketId) 
-        elif (command == "aws s3 ls s3://<sample-bucket> --profile user-1"):
-            command = "aws s3 ls s3://" +sampleBucketId + " --profile user-1"
-            output = runCommand(command,c,k)
-        
-        else:
-             output = runCommand(command,c,k)
-       
-       
+        #close the parimiko ssh session
 
-        #upload the text file to s3 bucket
-        
-
-
-
-    #close the parimiko ssh session
-
-    c.close()
-
+        c.close()
+    except:
+        print ('caught a timeout')
 
 
 #################################################################
