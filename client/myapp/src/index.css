@@ -1,0 +1,95 @@
+html {
+  background-color: #232f3d;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #232f3d;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding-top: 10vh;
+  --tw-bg-opacity: 1;
+
+  background-color: #232f3d;
+}
+.form-container {
+  width: 600px;
+  height: 800px;
+  background-color: white;
+  font-family: "Montserrat", sans-serif;
+  padding: 10px;
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+form {
+  width: 90%;
+  margin: 0 auto;
+}
+label {
+  display: block;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-left: 5px;
+  font-size: 14px;
+  font-weight: 700;
+}
+input {
+  box-sizing: border-box;
+  width: 100%;
+  display: inline-block;
+  padding: 8px 8px;
+
+  border-radius: 4px;
+  outline: none;
+  border: 1px solidrgba(243, 244, 246, var(--tw-bg-opacity));
+  --tw-bg-opacity: 1;
+  background-color: #dadada;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+}
+input:focus {
+  box-shadow: 0 0 5px #8b5cf6;
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+}
+h1 {
+  text-align: center;
+  color: #fff;
+}
+.submit-btn button {
+  margin-top: 20px;
+  width: 50%;
+  outline: none;
+  padding: 6px 8px;
+  border: 1px solid #8b5cf6;
+  border-radius: 4px;
+  background: rgb(110, 51, 248);
+  color: white;
+  margin-left: 50%;
+  cursor: pointer;
+}
+.submit-btn button:hover {
+  color: #eee7fe;
+  background: #8b5cf6;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+}
