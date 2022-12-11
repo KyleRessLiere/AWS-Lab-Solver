@@ -13,6 +13,7 @@
   }
 }
 
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -35,4 +36,209 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Page-nav {
+  display: 'flex';
+  alignItems: 'center';
+  justifyContent: 'center';
+  height: '100vh';
+}
+
+.Logo {
+  position: relative;
+  padding-top: 1em;
+  margin-top: 20px;
+}
+
+a {
+  color: #999999;
+}
+
+a:active {
+  color: white;
+}
+
+a[tabindex]:focus {
+  color: #222070;
+  outline: none;
+}
+
+.directions{
+  margin-top: 50px;
+  text-align: center;
+  list-style-position: inside;
+  color: #999999;
+  font-family: "Verdana";
+}
+ol.List li {
+  list-style-type: none;
+  counter-increment: item;
+  text-align: left;
+  margin-left: 25%;
+  line-height: 2.5;
+  font-size: 21px;
+}
+ol.List li:before {
+  content: counter(item);
+  margin-right: 20px;
+  font-size: 80%;
+  background-color: #EB912E;
+  color: #343334;
+  font-family: "DejaVu Sans Mono";
+  padding: 2px 8px;
+  border-radius: 2em;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.scrollDown {
+  margin-top: 80px;
+  position: static; 
+  width: 100%;
+  bottom: 20px;
+  align-items: center;
+  height: 20px;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+  animation: fadeIn 0.3s;
+  transition: opacity 0.4s;
+  opacity: 0.5;
+  color:#fff
+}
+
+.scrollDown:hover{
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.section1 {
+  height: 600px;
+  margin-top: 140px;
+  background-color: #999999;
+}
+
+.Form {
+  padding-top: 250px;
+}
+
+.section2 {
+  height: 600px;
+  background-color: #343334;
+  padding-top: 50px;
+}
+
+
+.form-style-4{
+	width: 450px;
+	font-size: 16px;
+	background: #000001;
+	padding: 30px 30px 15px 30px;
+	border: 5px solid #222070;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button],
+.form-style-4 input[type=text],
+.form-style-4 input[type=email],
+.form-style-4 textarea,
+.form-style-4 label
+{
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 16px;
+	color: #222070;
+
+}
+.form-style-4 label {
+	display:block;
+	margin-bottom: 10px;
+}
+.form-style-4 label > span{
+	display: inline-block;
+	float: center;
+	width: 150px;
+}
+.form-style-4 input[type=text],
+.form-style-4 input[type=email] 
+{
+  color: #757273;
+	background: transparent;
+	border: none;
+	border-bottom: 1px dashed #1B661D;
+	width: 275px;
+	outline: none;
+	padding: 0px 0px 0px 0px;
+	font-style: italic;
+}
+.form-style-4 textarea{
+  color: #757273;
+	font-style: italic;
+	padding: 0px 0px 0px 0px;
+	background: transparent;
+	outline: none;
+	border: none;
+	border-bottom: 1px dashed #1B661D;
+	width: 275px;
+	overflow: hidden;
+	resize:none;
+	height:20px;
+}
+
+.form-style-4 textarea:focus, 
+.form-style-4 input[type=text]:focus,
+.form-style-4 input[type=email]:focus,
+.form-style-4 input[type=email] :focus
+{
+	border-bottom: 1px dashed #757273;
+}
+
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button]{
+	background: #222070;
+	border: none;
+	padding: 8px 10px 8px 10px;
+	border-radius: 5px;
+	color: #000001;
+}
+.form-style-4 input[type=submit]:hover,
+.form-style-4 input[type=button]:hover{
+background: #757273;
+}
+
+
+.section3 {
+  padding: 400px;
 }
