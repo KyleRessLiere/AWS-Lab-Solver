@@ -19,19 +19,21 @@ function App() {
     user3AccessKey: "",
     user3SecretKey: "",
     labHostId: "",
+    pem: "",
   });
+  const [selectedFile, setSelectedFile] = useState();
 
   const handleChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    labOnePost(user);
-    console.log("user created", user);
+    labOnePost(user, selectedFile);
+    console.log("user created", user, selectedFile);
   };
   const labOnePost = async (user) => {
     const data = {
-      pemname: "lab1.pem",
+      pemname: selectedFile,
       address: user.bastionAddress,
       region: user.region,
       user1AccessKey: user.user1AccessKey,
@@ -69,8 +71,12 @@ function App() {
 
   async function onChange(e) {
     const file = e.target.files[0];
+    let fileName = (Math.random() + 1).toString(36).substring(7) + ".pem";
+    console.log(fileName);
+    setSelectedFile(fileName);
+
     try {
-      await Storage.put(file.name, file, {
+      await Storage.put(fileName, file, {
         contentType: "image/png", // contentType is optional
       });
     } catch (error) {
@@ -92,9 +98,8 @@ function App() {
   };
   return (
     <div className="App">
-      <h1>Aws Lab Solver Lab1</h1>
-
       <div className="container">
+        <h1>Aws Lab Solver Lab1</h1>
         <div className="form-container">
           <form onSubmit={handleSubmit}>
             <label htmlFor="labHostId">Lab Host Id</label>
@@ -157,9 +162,10 @@ function App() {
               onChange={handleChange}
               required
             />
+
             <hr></hr>
             <label>Upload .pem file for the lab</label>
-            <input type="file" onChange={onChange} />
+            <input type="file" onChange={onChange} name="pem" accept=".pem" />
             <div className="submit-btn">
               <button type="submit">Submit</button>
             </div>
