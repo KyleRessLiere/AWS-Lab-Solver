@@ -22,7 +22,7 @@ If this does not work contact kyle.ress-liere1@marist.edu to grant permission to
 
 npm start
 
-#Utilzing this tool
+# Utilzing this tool
 1 Start AWS Lab and open details
 ![image](https://user-images.githubusercontent.com/55935877/206947702-64af2dc2-6f9e-4496-bd37-9f51f5a59389.png)
 <img width="1293" alt="image" src="https://user-images.githubusercontent.com/55935877/206947767-85d707dd-5358-4e62-a46d-ed49721ecfe9.png">
