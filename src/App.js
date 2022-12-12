@@ -20,18 +20,19 @@ function App() {
     user3SecretKey: "",
     labHostId: "",
   });
+  const [selectedFile, setSelectedFile] = useState();
 
   const handleChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    labOnePost(user);
-    console.log("user created", user);
+    labOnePost(user, selectedFile);
+    console.log("user created", user, selectedFile);
   };
   const labOnePost = async (user) => {
-    const data = {
-      pemname: "lab1.pem",
+    const labData = {
+      pemname: selectedFile,
       address: user.bastionAddress,
       region: user.region,
       user1AccessKey: user.user1AccessKey,
@@ -51,7 +52,7 @@ function App() {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(labData),
       }
     )
       .then((response) => response.text())
@@ -64,16 +65,21 @@ function App() {
         link.download = "user-info.json";
         link.href = url;
         link.click();
+        deleteFile(labData.pemname);
       });
   };
-
+  async function deleteFile(fileName) {
+    await Storage.remove(fileName);
+    console.log(fileName);
+  }
   async function onChange(e) {
     const file = e.target.files[0];
-    console.log("test");
-    setUser({ ...user, pem: file.name });
-    console.log(user);
+    let fileName = (Math.random() + 1).toString(36).substring(7) + ".pem";
+    console.log(fileName);
+    setSelectedFile(fileName);
+
     try {
-      await Storage.put(file.name, file, {
+      await Storage.put(fileName, file, {
         contentType: "image/png", // contentType is optional
       });
     } catch (error) {
@@ -95,9 +101,8 @@ function App() {
   };
   return (
     <div className="App">
-      <h1>Aws Lab Solver Lab1</h1>
-
       <div className="container">
+        <h1>Aws Lab Solver Lab1</h1>
         <div className="form-container">
           <form onSubmit={handleSubmit}>
             <label htmlFor="labHostId">Lab Host Id</label>
@@ -160,9 +165,10 @@ function App() {
               onChange={handleChange}
               required
             />
+
             <hr></hr>
             <label>Upload .pem file for the lab</label>
-            <input type="file" onChange={onChange} />
+            <input type="file" onChange={onChange} name="pem" accept=".pem" />
             <div className="submit-btn">
               <button type="submit">Submit</button>
             </div>

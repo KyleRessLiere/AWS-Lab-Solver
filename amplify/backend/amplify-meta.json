@@ -1,0 +1,109 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-awscloudlabsolver-staging-33803-authRole",
+      "UnauthRoleArn": "arn:aws:iam::567366275643:role/amplify-awscloudlabsolver-staging-33803-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::567366275643:role/amplify-awscloudlabsolver-staging-33803-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-awscloudlabsolver-staging-33803-deployment",
+      "UnauthRoleName": "amplify-awscloudlabsolver-staging-33803-unauthRole",
+      "StackName": "amplify-awscloudlabsolver-staging-33803",
+      "StackId": "arn:aws:cloudformation:us-east-1:567366275643:stack/amplify-awscloudlabsolver-staging-33803/b8c80420-76a9-11ed-9cec-0ae1a1503963",
+      "AmplifyAppId": "d31atlexi29xa4"
+    }
+  },
+  "api": {
+    "awsCloudLabSolver": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "3weeyrfxkjdwdjlxdh6dktmpli",
+        "GraphQLAPIEndpointOutput": "https://egemwxfz5rb2tayfhbe6da5dca.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-p6w5ibko4zhqpgqd3zjedjmlw4"
+      },
+      "lastPushTimeStamp": "2022-12-09T21:26:20.843Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-awscloudlabsolver-staging-33803-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiawsCloudLabSolver"
+      }
+    }
+  },
+  "auth": {
+    "awsCloudLabSolver": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "output": {
+        "UserPoolId": "us-east-1_W4NH3UMCi",
+        "AppClientIDWeb": "8h070if6eo3rekrnnt6vs3jqg",
+        "AppClientID": "1visok9scsee5jspaa6888be0v",
+        "IdentityPoolId": "us-east-1:94ec9181-e3f9-4a66-ad99-7e8d387c4612",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:567366275643:userpool/us-east-1_W4NH3UMCi",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "awsCloudLabSolver"
+      },
+      "lastPushTimeStamp": "2022-12-09T21:26:20.845Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-awscloudlabsolver-staging-33803-deployment/amplify-cfn-templates/auth/awsCloudLabSolver-cloudformation-template.json",
+        "logicalId": "authawsCloudLabSolver"
+      },
+      "lastPushDirHash": "U576HFKL8LhCgm47envlNCyZ4vc="
+    }
+  },
+  "storage": {
+    "s3awslabsolveramplify": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "lastPushTimeStamp": "2022-12-09T21:26:23.153Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-awscloudlabsolver-staging-33803-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storages3awslabsolveramplify"
+      },
+      "output": {
+        "BucketName": "aws-lab-solver-amplify33803-staging",
+        "Region": "us-east-1"
+      },
+      "lastPushDirHash": "+XWuqmKGPBeW0S2y4RZd8oMimIY="
+    }
+  }
+}

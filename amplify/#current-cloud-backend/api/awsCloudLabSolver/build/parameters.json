@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "awsCloudLabSolver",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "S3DeploymentBucket": "amplify-awscloudlabsolver-staging-33803-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/cf178244608eafd280ecac6b7a5f990f5d017220"
+}
