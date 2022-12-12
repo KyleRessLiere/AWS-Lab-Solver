@@ -21,6 +21,15 @@
           "region": "us-east-1"
         },
         "s3awslabsolveramplify": {}
+      },
+      "api": {
+        "awsCloudLabSolver": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d31atlexi29xa4",
+          "type": "manual"
+        }
       }
     }
   }

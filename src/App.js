@@ -101,8 +101,8 @@ function App() {
   };
   return (
     <div className="App">
+      <h1>Aws Lab Solver Lab1</h1>
       <div className="container">
-        <h1>Aws Lab Solver Lab1</h1>
         <div className="form-container">
           <form onSubmit={handleSubmit}>
             <label htmlFor="labHostId">Lab Host Id</label>
