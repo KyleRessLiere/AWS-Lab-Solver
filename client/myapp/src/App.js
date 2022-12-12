@@ -19,7 +19,6 @@ function App() {
     user3AccessKey: "",
     user3SecretKey: "",
     labHostId: "",
-    pem: "",
   });
   const [selectedFile, setSelectedFile] = useState();
 
@@ -32,7 +31,7 @@ function App() {
     console.log("user created", user, selectedFile);
   };
   const labOnePost = async (user) => {
-    const data = {
+    const labData = {
       pemname: selectedFile,
       address: user.bastionAddress,
       region: user.region,
@@ -53,7 +52,7 @@ function App() {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(labData),
       }
     )
       .then((response) => response.text())
@@ -66,9 +65,13 @@ function App() {
         link.download = "user-info.json";
         link.href = url;
         link.click();
+        deleteFile(labData.pemname);
       });
   };
-
+  async function deleteFile(fileName) {
+    await Storage.remove(fileName);
+    console.log(fileName);
+  }
   async function onChange(e) {
     const file = e.target.files[0];
     let fileName = (Math.random() + 1).toString(36).substring(7) + ".pem";
